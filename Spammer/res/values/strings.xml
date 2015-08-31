@@ -1,0 +1,15 @@
+<resources>
+
+    <string name="appName">Spammer</string>
+
+    <string name="start">Start</string>
+
+    <string name="phone">Enter phone here</string>
+
+    <string name="message">Type your message here</string>
+
+    <string name="frequency">Frequency in miliseconds</string>
+
+    <string name="stop">Stop</string>
+
+</resources>
