@@ -13,20 +13,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	
+
 	private static final String CLASS_NAME = MainActivity.class.getName();
-	
+
 	private static final String LOG_TAG    = MainActivity.CLASS_NAME;
-	
+
 	@Override
 	public void onConfigurationChanged(final Configuration newConfig) {
-
+		
 		super.onConfigurationChanged(newConfig);
 	}
-	
+
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
-
+		
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.main);
 		//
@@ -37,10 +37,10 @@ public class MainActivity extends Activity {
 		//
 		final Button start = (Button) this.findViewById(R.id.start);
 		start.setOnClickListener(new OnClickListener() {
-
+			
 			@Override
 			public void onClick(final View view) {
-
+				
 				final String victim = p.getText().toString();
 				final String message = m.getText().toString();
 				//
@@ -54,10 +54,10 @@ public class MainActivity extends Activity {
 		//
 		final Button stop = (Button) this.findViewById(R.id.stop);
 		stop.setOnClickListener(new OnClickListener() {
-
+			
 			@Override
 			public void onClick(final View view) {
-
+				
 				Engine.getInstance().pause();
 			}
 		});

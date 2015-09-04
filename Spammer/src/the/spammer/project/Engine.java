@@ -12,27 +12,27 @@ import android.util.Log;
 import android.widget.Toast;
 
 class Engine extends Thread {
-
+	
 	private static final String LOG_TAG   = Engine.class.getName();
-	
+
 	private static final String DELIVERED = "delivered", SENT = "sent";
-	
+
 	private static final Engine INSTANCE  = new Engine();
-
+	
 	public static Engine getInstance() {
-
+		
 		return Engine.INSTANCE;
 	}
-
-	private volatile boolean running = true, spamming = false;
-
-	private PendingIntent	 delivery, sent;
 	
-	private String		 victim, message;
+	private volatile boolean running = true, spamming = false;
+	
+	private PendingIntent	 delivery, sent;
 
+	private String		 victim, message;
+	
 	@Override
 	public void run() {
-		
+
 		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 		this.init();
 		while (this.running) {
@@ -57,23 +57,23 @@ class Engine extends Thread {
 			}
 		}
 	}
-
+	
 	synchronized void pause() {
-		
+
 		this.spamming = false;
 	}
-
+	
 	synchronized void rezume(final String victim, final String message) {
-		
+
 		this.victim = victim;
 		this.message = message;
 		//
 		if (!this.isAlive()) {
 			new Thread(new Runnable() {
-				
+
 				@Override
 				public void run() {
-					
+
 					Engine.this.start();
 				}
 			}).start();
@@ -81,26 +81,26 @@ class Engine extends Thread {
 		this.spamming = true;
 		this.notify();
 	}
-	
+
 	synchronized void shutdown() {
-		
+
 		this.pause();
 		this.running = false;
 		this.notify();
 	}
-	
+
 	private void init() {
-		
+
 		try {
 			//
 			this.sent = PendingIntent.getBroadcast(Spammer.getAppContext(), 0, new Intent(Engine.SENT), PendingIntent.FLAG_UPDATE_CURRENT);
 			this.delivery = PendingIntent.getBroadcast(Spammer.getAppContext(), 0, new Intent(Engine.DELIVERED), PendingIntent.FLAG_UPDATE_CURRENT);
 			//
 			Spammer.getAppContext().registerReceiver(new BroadcastReceiver() {
-
+				
 				@Override
 				public void onReceive(final Context context, final Intent intent) {
-
+					
 					String result = new String();
 					switch (this.getResultCode()) {
 						case Activity.RESULT_OK:
@@ -118,10 +118,10 @@ class Engine extends Thread {
 			}, new IntentFilter(Engine.SENT));
 			//
 			Spammer.getAppContext().registerReceiver(new BroadcastReceiver() {
-
+				
 				@Override
 				public void onReceive(final Context context, final Intent intent) {
-
+					
 					synchronized (Engine.this) {
 						Engine.this.notify();
 					}
